@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         //val navView: BottomNavigationView = findViewById(R.id.buttom_nav_view);
     }
 
-    private fun makeCurrentFragment(fragment: Fragment){
+    fun makeCurrentFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.frame_layout,fragment)
             commit()
