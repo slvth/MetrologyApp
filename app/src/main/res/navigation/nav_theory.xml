@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_theory"
+    app:startDestination="@id/courseFragment">
+
+    <fragment
+        android:id="@+id/courseFragment"
+        android:name="com.example.metrologyapp.fragment.theory.CourseFragment"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_course" >
+        <action
+            android:id="@+id/action_courseFragment_to_moduleFragment"
+            app:destination="@id/moduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moduleFragment"
+        android:name="com.example.metrologyapp.fragment.theory.ModuleFragment"
+        android:label="fragment_module"
+        tools:layout="@layout/fragment_module" >
+        <action
+            android:id="@+id/action_moduleFragment_to_themeFragment"
+            app:destination="@id/themeFragment" />
+        <argument
+            android:name="currentCourse"
+            app:argType="com.example.metrologyapp.model.Course" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeFragment"
+        android:name="com.example.metrologyapp.fragment.theory.ThemeFragment"
+        android:label="fragment_theme"
+        tools:layout="@layout/fragment_theme" >
+        <argument
+            android:name="currentTheme"
+            app:argType="com.example.metrologyapp.model.Theme" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.metrologyapp.fragment.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/graphFragment"
+        android:name="com.example.metrologyapp.fragment.GraphFragment"
+        android:label="fragment_graph"
+        tools:layout="@layout/fragment_graph" />
+</navigation>

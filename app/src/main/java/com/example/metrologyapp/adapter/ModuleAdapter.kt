@@ -19,7 +19,7 @@ class ModuleAdapter(val moduleList: ArrayList<Module>,val listenerModule: Listen
         fun bind(module: Module, listener: ListenerModule, listenerTheme: ThemeAdapter.ListenerTheme, context: Context) = with(binding){
             tvModule.text = module.title
             rvTheme.layoutManager = LinearLayoutManager(context)
-            rvTheme.adapter = ThemeAdapter(module.themes, listenerTheme)
+            rvTheme.adapter = ThemeAdapter(module.themes!!, listenerTheme)
             itemView.setOnClickListener{
                 listener.onClick(module)
             }

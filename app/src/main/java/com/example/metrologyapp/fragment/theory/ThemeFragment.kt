@@ -1,4 +1,4 @@
-package com.example.metrologyapp.fragment
+package com.example.metrologyapp.fragment.theory
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,8 +23,6 @@ class ThemeFragment(val theme: Theme) : Fragment() {
             tvTheme.text = theme.title
             wvTheme.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
             wvTheme.loadDataWithBaseURL(null, "htmlAsString", "text/html", "utf-8", null)
-
-
         }
 
 
