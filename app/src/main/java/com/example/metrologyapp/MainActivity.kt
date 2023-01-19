@@ -1,74 +1,68 @@
 package com.example.metrologyapp
 
+import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.metrologyapp.databinding.ActivityMainBinding
-import com.example.metrologyapp.fragment.AccountFragment
-import com.example.metrologyapp.fragment.GraphFragment
-import com.example.metrologyapp.fragment.theory.CourseFragment
-import com.example.metrologyapp.fragment.theory.CourseFragmentDirections
-import com.example.metrologyapp.fragment.theory.ModuleFragmentDirections
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var binding: ActivityMainBinding
-    lateinit var navController: NavController
 
+    private var currentNavController : LiveData<NavController>?=null
 
+    private var onDestinationChangedListener =
+        NavController.OnDestinationChangedListener{ controller, destination, arguments ->
+            //binding.bottomNavigationView.isVisible = destination.id != R.id.moduleFragment
+        }
+
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val theoryFragment = CourseFragment()
-        val graphFragment = GraphFragment()
-        val accountFragment = AccountFragment()
+        if(savedInstanceState == null)
+            setUpBottomNavigationBar()
+    }
 
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        setUpBottomNavigationBar()
+    }
 
-        //makeCurrentFragment(theoryFragment)
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun setUpBottomNavigationBar() {
+        val navGraphIds = listOf(
+            R.navigation.nav_theory,
+            R.navigation.nav_graph,
+            R.navigation.nav_account
+        )
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.containerTheory) as NavHostFragment
-        navController = navHostFragment.navController
+        val controller = binding.bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.containerTheory,
+            intent = intent
+        )
 
-        val navView: BottomNavigationView = findViewById(R.id.buttom_nav_view);
-        binding.buttomNavView.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.courseFragment -> {
-                    Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
-                }
-                R.id.graphFragment -> {
-                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-                    return@setOnItemSelectedListener true
-                }
-                R.id.accountFragment -> {
-                    Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
-                    return@setOnItemSelectedListener true
-                }
-            }
-            return@setOnItemSelectedListener false
+        controller.observe(this){ navController ->
+            //setupActionBarWithNavController(navController)
+            currentNavController?.value?.removeOnDestinationChangedListener(
+                onDestinationChangedListener
+            )
+            navController.addOnDestinationChangedListener(onDestinationChangedListener)
         }
 
-        binding.buttomNavView.setupWithNavController(navController)
+        currentNavController = controller
     }
 
-    fun makeCurrentFragment(fragment: Fragment){
-        //val action = ModuleFragmentDirections.actionModuleFragmentToCourseFragment()
-        //navController.navigate(action)
-
-        Toast.makeText(this, "fsefsefsef", Toast.LENGTH_SHORT).show()
-        /*
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frame_layout,fragment)
-            commit()
-        }*/
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
-
 }
