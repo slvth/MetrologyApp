@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.metrologyapp.R
 import com.example.metrologyapp.adapter.ModuleAdapter
@@ -30,15 +32,25 @@ class ModuleFragment() : Fragment(), ModuleAdapter.ListenerModule, ThemeAdapter.
         binding = FragmentModuleBinding.inflate(inflater, container, false)
         val view = binding.root
 
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val moduleList = args.currentCourse.modules
+        val appBarConfiguration = AppBarConfiguration(findNavController().graph)
 
         binding.apply {
             adapterModule = ModuleAdapter(moduleList!!,this@ModuleFragment, this@ModuleFragment)
             rvModule.layoutManager = LinearLayoutManager(activity)
             rvModule.adapter = adapterModule
-        }
 
-        return view
+
+            toolbarModule.setupWithNavController(findNavController(), appBarConfiguration)
+            toolbarModule.title = args.currentCourse.title
+        }
     }
 
     override fun onClick(module: Module) {
