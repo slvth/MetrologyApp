@@ -13,7 +13,10 @@ class ThemeAdapter(val themeList: ArrayList<Theme>, val listener: ListenerTheme)
 
     class ThemeHolder(item: View): RecyclerView.ViewHolder(item) {
         private val binding = ThemeItemBinding.bind(item)
-        fun bind(theme: Theme, listener: ListenerTheme) = with(binding){
+        fun bind(theme: Theme, listener: ListenerTheme, position: Int) = with(binding){
+            imTheme.apply {
+                transitionName = "Image$position"
+            }
 
             Glide.with(itemView.context)
                 .load(theme.imageURL)
@@ -22,8 +25,9 @@ class ThemeAdapter(val themeList: ArrayList<Theme>, val listener: ListenerTheme)
                 .into(imTheme)
 
             tvTheme.text = theme.title
+
             itemView.setOnClickListener {
-                listener.OnClick(theme)
+                listener.OnClick(theme, "Image$position")
             }
         }
     }
@@ -34,7 +38,7 @@ class ThemeAdapter(val themeList: ArrayList<Theme>, val listener: ListenerTheme)
     }
 
     override fun onBindViewHolder(holder: ThemeHolder, position: Int) {
-        holder.bind(themeList[position], listener)
+        holder.bind(themeList[position], listener, position)
     }
 
     override fun getItemCount(): Int {
@@ -47,7 +51,7 @@ class ThemeAdapter(val themeList: ArrayList<Theme>, val listener: ListenerTheme)
     }
 
     interface ListenerTheme{
-        fun OnClick(theme: Theme)
+        fun OnClick(theme: Theme, transitionName: String)
     }
 }
 

@@ -34,5 +34,8 @@
         <argument
             android:name="currentTheme"
             app:argType="com.example.metrologyapp.model.Theme" />
+        <argument
+            android:name="transition"
+            app:argType="string" />
     </fragment>
 </navigation>

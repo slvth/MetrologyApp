@@ -15,7 +15,7 @@
             android:id="@+id/imTheme"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:srcCompat="@drawable/ic_default" />
+            app:srcCompat="@drawable/ic_default"/>
 
         <TextView
             android:id="@+id/tvTheme"

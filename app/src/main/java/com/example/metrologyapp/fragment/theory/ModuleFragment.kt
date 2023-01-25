@@ -6,17 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.metrologyapp.R
 import com.example.metrologyapp.adapter.ModuleAdapter
 import com.example.metrologyapp.adapter.ThemeAdapter
 import com.example.metrologyapp.databinding.FragmentModuleBinding
 import com.example.metrologyapp.model.Module
 import com.example.metrologyapp.model.Theme
+import com.google.android.material.transition.MaterialElevationScale
 
 
 class ModuleFragment() : Fragment(), ModuleAdapter.ListenerModule, ThemeAdapter.ListenerTheme {
@@ -43,7 +44,7 @@ class ModuleFragment() : Fragment(), ModuleAdapter.ListenerModule, ThemeAdapter.
         val appBarConfiguration = AppBarConfiguration(findNavController().graph)
 
         binding.apply {
-            adapterModule = ModuleAdapter(moduleList!!,this@ModuleFragment, this@ModuleFragment)
+            adapterModule = ModuleAdapter(moduleList,this@ModuleFragment, this@ModuleFragment)
             rvModule.layoutManager = LinearLayoutManager(activity)
             rvModule.adapter = adapterModule
 
@@ -57,9 +58,9 @@ class ModuleFragment() : Fragment(), ModuleAdapter.ListenerModule, ThemeAdapter.
         Toast.makeText(context, "Нажали на модуль: ${module.title}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun OnClick(theme: Theme) {
+    override fun OnClick(theme: Theme, transitionName: String) {
         Toast.makeText(context, "Нажали на тему: ${theme.title}", Toast.LENGTH_SHORT).show()
-        val action = ModuleFragmentDirections.actionModuleFragmentToThemeFragment(theme)
+        val action = ModuleFragmentDirections.actionModuleFragmentToThemeFragment(theme, transitionName)
         findNavController().navigate(action)
     }
 

@@ -19,6 +19,7 @@
         android:id="@+id/rvTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/theme_item" />
+        tools:listitem="@layout/theme_item"
+        android:transitionGroup="true"/>
 
 </LinearLayout>
